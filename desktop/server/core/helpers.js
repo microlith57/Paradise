@@ -1,7 +1,7 @@
 'use strict'
 
 // nil value for WildcardLISP
-const _nil = function () {
+const _nil = function nil () {
   this.toString = function () {
     return 'nil'
   }
@@ -60,7 +60,7 @@ String.prototype.toTitleCase = function () {
  * Shuffles array in place.
  * @param {Array} a items An array containing the items.
  */
-function _shuffle (a) {
+const _shuffle = function shuffle (a) {
   var j, x, i
   for (i = a.length - 1; i > 0; i--) {
     j = Math.floor(Math.random() * (i + 1))
@@ -71,9 +71,23 @@ function _shuffle (a) {
   return a
 }
 
+/**
+ * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
+ * @param obj1
+ * @param obj2
+ * @returns obj3 a new object based on obj1 and obj2
+ */
+const _merge_options = function merge_options (obj1, obj2) {
+  var obj3 = {}
+  for (var attrname in obj1) { obj3[attrname] = obj1[attrname] }
+  for (var attrname in obj2) { obj3[attrname] = obj2[attrname] }
+  return obj3
+}
+
 const _helpers = {
   nil: new _nil(),
-  shuffle: _shuffle
+  shuffle: _shuffle,
+  merge_options: _merge_options
 }
 
 module.exports = _helpers
