@@ -3,8 +3,6 @@
 const Error = require('./error')
 const pluralize = require('pluralize')
 
-// TODO: Add errors for WildcardLISP
-
 const errors = {
   NOTARGET: function (params, type = 'visible', name = null) {
     const target = this.remove_articles(params)
@@ -33,6 +31,16 @@ const errors = {
 
   NOCHANGE: function (text = `<p>Nothing changed.</p>`) {
     return new Error('err_NOCHANGE', text)
+  },
+
+  lisp: {
+    MISFORMATTED_FUNCTION: function () {
+      return new Error('err_lisp_MISFORMATTED_FUNCTION', 'Misformatted function.')
+    },
+
+    UNKNOWN: function (type = 'vessel') {
+      return new Error('err_lisp_UNKNOWN', `Unknown ${type}.`)
+    },
   }
 }
 
