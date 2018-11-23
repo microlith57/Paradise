@@ -36,16 +36,34 @@ const _lib = [
 
   // TODO These should take vessel IDs
   {
-    props: ["parent", [], 'The vessel\'s parent\'s ID.'],
-    func: function (context) {
-      return context.host.parent().id
+    props: ["parent", ['id = self'], 'The vessel\'s parent\'s ID.'],
+    func: function (context, id) {
+      let target
+      if (id === undefined) {
+        target = context.host
+      } else {
+        if (typeof id === 'function') { id = id() }
+        if (typeof id !== 'number') { return '(error:misformated function)' }
+        target = context.host.paradise.world[id]
+        if (!target) { return `(error:unknown vessel-${id})` }
+      }
+      return target.parent().id
     }
   },
 
   {
-    props: ["stem", [], 'The current vessel\'s stem'],
-    func: function (context) {
-      return context.host.stem().id
+    props: ["stem", ['id = self'], 'The current vessel\'s stem'],
+    func: function (context, id) {
+      let target
+      if (id === undefined) {
+        target = context.host
+      } else {
+        if (typeof id === 'function') { id = id() }
+        if (typeof id !== 'number') { return '(error:misformated function)' }
+        target = context.host.paradise.world[id]
+        if (!target) { return `(error:unknown vessel-${id})` }
+      }
+      return target.stem().id
     }
   },
 
