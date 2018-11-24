@@ -7,7 +7,7 @@ const _lib = [
   {
     props: ["tostring", ['a'], 'Convert "a" to a string. Does not work on nil.'],
     func: function (context, a) {
-      if (a && !(a === helpers.nil) && a.toString) {
+      if ((a !== 0 && a !== '') && a && !(a === helpers.nil) && a.toString) {
         return a.toString()
       } else {
         return helpers.nil
