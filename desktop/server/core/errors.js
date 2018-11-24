@@ -43,6 +43,13 @@ const errors = {
     UNKNOWN: function (card, type = 'vessel') {
       return new Error('err_lisp_UNKNOWN', `@${card} recieved an unknown ${type}.`)
     },
+
+    NOPARAM: function (card, param) {
+      return new Error('err_lisp_NOPARAM', `@${card} did not recieve ${param ? '' : 'a '}parameter${param ? ` ${param}` : ''}.`)
+    },
+
+    NOVALID: function (card) {
+      return new Error('err_lisp_NOVALID', `Invalid use of ${card}.`)
     },
   }
 }
