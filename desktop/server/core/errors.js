@@ -34,12 +34,15 @@ const errors = {
   },
 
   lisp: {
-    MISFORMATTED_FUNCTION: function () {
-      return new Error('err_lisp_MISFORMATTED_FUNCTION', 'Misformatted function.')
+    // TODO: What is this for?
+    // TODO: Document
+    MISFORMATTED_FUNCTION: function (card) {
+      return new Error('err_lisp_MISFORMATTED_FUNCTION', '@${card} recieved a misformatted function.')
     },
 
-    UNKNOWN: function (type = 'vessel') {
-      return new Error('err_lisp_UNKNOWN', `Unknown ${type}.`)
+    UNKNOWN: function (card, type = 'vessel') {
+      return new Error('err_lisp_UNKNOWN', `@${card} recieved an unknown ${type}.`)
+    },
     },
   }
 }

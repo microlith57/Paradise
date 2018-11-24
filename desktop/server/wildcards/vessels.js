@@ -10,7 +10,7 @@ const _lib = [
   {
     props: ["vessel", ['id', 'field'], 'Return the data field `field` of the specified vessel by ID.'],
     func: function (context, id, field) {
-      const target = lisp_helpers.vessel_from_id(context, id, errors.lisp.UNKNOWN())
+      const target = lisp_helpers.vessel_from_id(context, 'vessel', id, errors.lisp.UNKNOWN('vessel'))
       if (target === helpers.nil || target instanceof Error) {
         return target
       }
@@ -46,7 +46,7 @@ const _lib = [
   {
     props: ["parent", ['id = self'], 'The vessel\'s parent\'s ID.'],
     func: function (context, id) {
-      const target = lisp_helpers.vessel_from_id(context, id, context.host.id)
+      const target = lisp_helpers.vessel_from_id(context, 'parent', id, context.host.id)
       return target.parent().id
     }
   },
@@ -54,7 +54,7 @@ const _lib = [
   {
     props: ["stem", ['id = self'], 'The current vessel\'s stem'],
     func: function (context, id) {
-      const target = lisp_helpers.vessel_from_id(context, id, context.host.id)
+      const target = lisp_helpers.vessel_from_id(context, 'stem', id, context.host.id)
       return target.stem().id
     }
   },
@@ -64,7 +64,7 @@ const _lib = [
   {
     props: ["siblings", ['id = self'], 'The given vessel\'s siblings'],
     func: function (context, id) {
-      const target = lisp_helpers.vessel_from_id(context, id, context.host.id)
+      const target = lisp_helpers.vessel_from_id(context, 'siblings', id, context.host.id)
       return target.siblings().map(function (sibling) {
         return sibling.id
       })
@@ -74,7 +74,7 @@ const _lib = [
   {
     props: ["children", ['id = self'], 'The given vessel\'s children'],
     func: function (context, id) {
-      const target = lisp_helpers.vessel_from_id(context, id, context.host.id)
+      const target = lisp_helpers.vessel_from_id(context, 'children', id, context.host.id)
       return target.children().map(function (child) {
         return child.id
       })
@@ -86,7 +86,7 @@ const _lib = [
   {
     props: ["is_paradox", ['id = self'], 'Is the given vessel a paradox?'],
     func: function (context, id) {
-      const target = lisp_helpers.vessel_from_id(context, id, context.host.id)
+      const target = lisp_helpers.vessel_from_id(context, 'is_paradox', id, context.host.id)
       return target.isParadox() ? 'true' : helpers.nil
     }
   },
@@ -94,7 +94,7 @@ const _lib = [
   {
     props: ["is_program", ['id = self'], 'Is the given vessel a program?'],
     func: function (context, id) {
-      const target = lisp_helpers.vessel_from_id(context, id, context.host.id)
+      const target = lisp_helpers.vessel_from_id(context, 'is_program', id, context.host.id)
       return target.is_program() ? 'true' : helpers.nil
     }
   },
@@ -102,7 +102,7 @@ const _lib = [
   {
     props: ["is_usable", ['id = self'], 'Is the given vessel usable?'],
     func: function (context, id) {
-      const target = lisp_helpers.vessel_from_id(context, id, context.host.id)
+      const target = lisp_helpers.vessel_from_id(context, 'is_usable', id, context.host.id)
       return target.usable() ? 'true' : helpers.nil
     }
   },
@@ -110,7 +110,7 @@ const _lib = [
   {
     props: ["is_passive", ['id = self'], 'Is the given vessel passive?'],
     func: function (context, id) {
-      const target = lisp_helpers.vessel_from_id(context, id, context.host.id)
+      const target = lisp_helpers.vessel_from_id(context, 'is_passive', id, context.host.id)
       return target.passive() ? 'true' : helpers.nil
     }
   },

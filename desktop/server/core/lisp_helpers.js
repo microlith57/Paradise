@@ -19,14 +19,14 @@ const _prepare_lisp = function prepare_lisp (a, def = helpers.nil) {
   return a
 }
 
-const _vessel_from_id = function vessel_from_id (context, id, def = helpers.nil) {
+const _vessel_from_id = function vessel_from_id (context, card, id, def = helpers.nil) {
   id = _prepare_lisp(id, def)
   if (typeof id === 'number' && Number.isInteger(id)) {
     const target = context.host.paradise.world[id]
     if (target) {
       return target
     } else {
-      return errors.lisp.UNKNOWN(`vessel #${id}`)
+      return errors.lisp.UNKNOWN(card, `vessel #${id}`)
     }
   } else {
     return helpers.nil // TODO: Raise error
