@@ -1,6 +1,9 @@
 'use strict'
 
+const lisp_helpers = require('../core/lisp_helpers')
 const helpers = require('../core/helpers')
+const errors  = require('../core/errors')
+const Error   = require('../core/error')
 
 const _lib = [
 
@@ -9,7 +12,7 @@ const _lib = [
   {
     props: ["list", ['...items'], 'Transform a sequence of inputs into a list.'],
     func: function (context, ...items) {
-      if (!items) {
+      if (!items || items.length === 0) {
         return helpers.nil
       }
       return items
@@ -20,10 +23,10 @@ const _lib = [
   {
     props: ["push", ['element', 'list'], 'Push an element to the end of a list.'],
     func: function (context, element, list) {
-      if (!element || !list) {
+      if (!list || !(list instanceof Array)) {
         return helpers.nil
       }
-      list.push(element)
+      list.push(lisp_helpers.prepare_lisp(element))
       return list
     }
   },
@@ -31,7 +34,7 @@ const _lib = [
   {
     props: ["pop", ['list'], 'Pop an element from the end of a list.'],
     func: function (context, list) {
-      if (!list) {
+      if (!list || !(list instanceof Array) || list.length < 1) {
         return helpers.nil
       }
       return list.pop()
@@ -42,10 +45,10 @@ const _lib = [
   {
     props: ["get", ['index', 'list'], 'Get an element from a list.'],
     func: function (context, index, list) {
-      if (!index || !list) {
+      if (index == null || !list || !(list instanceof Array) || !(typeof index === 'number')) {
         return helpers.nil
       }
-      return list[index]
+      return list[index] || helpers.nil // Return the data value or nil if no value is present.
     }
   },
 
@@ -53,7 +56,7 @@ const _lib = [
   {
     props: ["set", ['index', 'value', 'list'], 'Set an element of a list.'],
     func:  function (context, index, value, list) {
-      if (!index || !value || !list) {
+      if (index == null || !(typeof index === 'number') || value == null || !list || !(list instanceof Array)) {
         return helpers.nil
       }
       list[index] = value
@@ -64,7 +67,7 @@ const _lib = [
   {
     props: ["length", ['list'], 'Get the length of a list.'],
     func: function (context, list) {
-      if (!list) {
+      if (!list || !(list instanceof Array)) {
         return helpers.nil
       }
       return list.length
@@ -75,6 +78,9 @@ const _lib = [
   {
     props: ["concatl", ['...items'], 'Concatenate a sequence of lists.'],
     func: function (context, ...items) {
+      if (!items || items.length < 1) {
+        return helpers.nil
+      }
       let out = []
       for (var id in items) {
         out.concat(items[id])
@@ -90,17 +96,26 @@ const _lib = [
     props: ["range", ['a', 'b'], 'Generate a list. Accepts two formats: <code>range length</code> and <code>range start end</code>. The <code>end</code> value is not included.'],
     func: function (context, a, b) {
       let start, end
-      if (!!a && !b) { // If start is defined but not end
+
+      if (a == null || a === helpers.nil || isNaN(parseInt(a))) {
+        a = helpers.nil
+      }
+
+      if (b == null || b === helpers.nil || isNaN(parseInt(b))) {
+        b = helpers.nil
+      }
+
+      if (a !== helpers.nil && b === helpers.nil) { // If start is defined but not end
         start = 0
         end = a
-      } else if (!!a && !!b) {
+      } else if (a !== helpers.nil && b !== helpers.nil) {
         start = a
         end = b
       } else {
-        // error
+        return helpers.nil // error
       }
-      if (isNaN(parseInt(start)) || isNaN(parseInt(end)) || parseInt(start) > parseInt(end)) {
-        // error
+      if (start > end) {
+        return helpers.nil // error
       }
       const size = (end - start)
       return [...Array(size).keys()].map(i => i + start)
@@ -108,6 +123,7 @@ const _lib = [
   },
 
   // TODO: contains(list, thing)
+  // TODO: indexof(list, thing)
 
   // eg. `create chair & create table & echo @( map siblings ( lambda (id) ( vessel id name ) ) )`
   {
@@ -116,10 +132,11 @@ const _lib = [
       if (typeof list === 'function') {
         list = list()
       }
-
-      if (list instanceof Array) {
-        return list.map(func)
+      if (!list || !(list instanceof Array)) {
+        return helpers.nil
       }
+
+      return list.map(func)
     }
   },
 

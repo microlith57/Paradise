@@ -1,6 +1,9 @@
 'use strict'
 
+const lisp_helpers = require('../core/lisp_helpers')
 const helpers = require('../core/helpers')
+const errors  = require('../core/errors')
+const Error   = require('../core/error')
 
 const _lib = [
   // Functions go here

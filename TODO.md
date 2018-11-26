@@ -6,10 +6,10 @@
 -   Expand the default world.
 -   Improve walkthrough, add checks for multi-line.
 -   Potentially add syntax highlighting for both Paradise Commands and WildcardLISP.
--   Make various class methods (eg. Vessel.parent) into getters
 -   Make walkthrough backup & restore world and reset the world before starting on a section
 -   Add more sections to walkthrough
 -   Maybe add menu item for walkthrough?
+-   Make various class methods (eg. Vessel.parent) into getters
 
 ```
 class Rectangle {

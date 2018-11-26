@@ -7,6 +7,8 @@ const _lib = [
   {
     props: ["equal", ['a', 'b'], 'Return "true" if a is b, or nil otherwise.'],
     func: function (context, a, b) {
+      a = (a == null) ? helpers.nil : a
+      b = (b == null) ? helpers.nil : b
       if ((typeof a === 'function' ? a() : a) == (typeof b === 'function' ? b() : b)) {
         return 'true'
       }
@@ -35,6 +37,9 @@ const _lib = [
   {
     props: ["and", ['...items'], 'Return first non-nil input if all inputs are non-first_non_nil (or nil if there are none).'],
     func: function (context, ...items) {
+      if (!items || !(items instanceof Array)) {
+        return helpers.nil
+      }
       if (items.length === 1 && items[0] instanceof Array) {
         items = items[0]
       }
@@ -53,6 +58,9 @@ const _lib = [
   {
     props: ["or", ['...items'], 'Return first non-nil input (or nil if there are none).'],
     func: function (context, ...items) {
+      if (!items || !(items instanceof Array)) {
+        return helpers.nil
+      }
       if (items.length === 1 && items[0] instanceof Array) {
         items = items[0]
       }
@@ -62,7 +70,19 @@ const _lib = [
         }
       }
       return helpers.nil
-    }},
+    }
+  },
+
+  {
+    props: ["not", ['a'], 'If the input is nil, output true. Otherwise, output nil.']
+    func: function (context, a) {
+      if (a == null || a === helpers.nil) {
+        return 'true'
+      } else {
+        return helpers.nil
+      }
+    }
+  },
 
 ]
 
