@@ -9,6 +9,7 @@
 -   Make various class methods (eg. Vessel.parent) into getters
 -   Add more sections to walkthrough
 -   Maybe add menu item for walkthrough?
+-   Add a tutorial for using walkthrough
 
 ```javascript
 class Rectangle {
